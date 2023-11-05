@@ -9,9 +9,9 @@ public class TTTBoard {
     static JButton[][] board;
     static int currentPlayer;
     static JLabel currentPlayerLabel;
-    static int n;
-    public static void createGameBoard(JFrame frame, String player1, String player2, int size) {
-        n = size;
+    static int size;
+    public static void createGameBoard(JFrame frame, String player1, String player2, int n) {
+        size = n;
         board = new JButton[size][size];
         currentPlayer = 1;
 
@@ -76,8 +76,8 @@ public class TTTBoard {
     }
 
     private static boolean isBoardFull() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (board[i][j].getText().equals("")) {
                     return false;
                 }
@@ -87,8 +87,8 @@ public class TTTBoard {
     }
 
     private static void resetBoard() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 board[i][j].setText("");
             }
         }
