@@ -4,14 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class TTTBoard {
     static JButton[][] board;
     static int currentPlayer;
     static JLabel currentPlayerLabel;
-    static int n;
-    public static void createGameBoard(JFrame frame, String player1, String player2, int size) {
-        n = size;
+    static int size;
+    public static void createGameBoard(JFrame frame, String player1, String player2, int n) {
+        size = n;
         board = new JButton[size][size];
         currentPlayer = 1;
 
@@ -44,7 +45,12 @@ public class TTTBoard {
                                 clickedButton.setText("X");
                                 currentPlayerLabel.setText(player2);
                                 currentPlayer = 2;
-                            } else {
+                                if(player2.equals("AI")){
+                                    makeRandomMove();
+                                    currentPlayerLabel.setText(player1+"'s turn");
+                                    currentPlayer = 1;
+                                }
+                            }else{
                                 clickedButton.setText("O");
                                 currentPlayerLabel.setText(player1);
                                 currentPlayer = 1;
@@ -52,11 +58,13 @@ public class TTTBoard {
                         }
 
                         if (checkForWin()) {
-                            JOptionPane.showMessageDialog(frame, "Player " + (currentPlayer == 1 ? "1" : "2") + " wins!");
-                            resetBoard();
+                            JOptionPane.showMessageDialog(frame, (currentPlayer == 1 ? player2 : player1) + " wins!");
+                            frame.dispose();
+                            resetGame();
                         } else if (isBoardFull()) {
                             JOptionPane.showMessageDialog(frame, "It's a draw!");
-                            resetBoard();
+                            frame.dispose();
+                            resetGame();
                         }
                     }
                 });
@@ -70,14 +78,84 @@ public class TTTBoard {
     }
 
     private static boolean checkForWin() {
-        // Implement your win condition checking logic here
-        // Return true if there is a win, false otherwise
+        return (checkForRow(size)||(checkForColumn(size))||checkForDiagonalLeftToRight(size)||checkForDiagonalRightToLeft(size));
+    }
+
+    private static boolean checkForRow(int size){
+        if(size==3){
+            for(int i=0; i<size; i++){
+                if(buttonmatch(board[i][0], board[i][1])&&buttonmatch(board[i][0], board[i][2]))
+                    return true;
+            }
+        }else{
+            for(int i=0; i<size;i++){
+                for(int j=0; j<size-3;j++){
+                    if(buttonmatch(board[i][j], board[i][j+1])&&buttonmatch(board[i][j], board[i][j+2])&&buttonmatch(board[i][j], board[i][j+3]))
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
+    private static boolean checkForColumn(int size){
+        if(size==3){
+            for(int j=0; j<size; j++){
+                if(buttonmatch(board[0][j], board[1][j])&&buttonmatch(board[0][j], board[2][j]))
+                    return true;
+            }
+        }else{
+            for(int j=0; j<size;j++){
+                for(int i=0; i<size-3;i++){
+                    if(buttonmatch(board[i][j], board[i+1][j])&&buttonmatch(board[i][j], board[i+2][j])&&buttonmatch(board[i][j], board[i+3][j]))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkForDiagonalLeftToRight(int size){
+        if(size==3){
+            if(buttonmatch(board[0][0], board[1][1])&&buttonmatch(board[0][0], board[2][2]))
+                return true;
+        }else{
+            for(int i=0; i<size-3;i++){
+                for(int j=0; j<size-3;j++){
+                    if(buttonmatch(board[i][j], board[i+1][j+1])&&buttonmatch(board[i][j], board[i+2][j+2])&&buttonmatch(board[i][j], board[i+3][j+3]))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkForDiagonalRightToLeft(int size){
+        if(size==3){
+            if(buttonmatch(board[0][2], board[1][1])&&buttonmatch(board[0][2], board[2][0]))
+                return true;
+        }else{
+            for(int i=0; i<size-3;i++){
+                for(int j=3; j<size; j++){
+                    if(buttonmatch(board[i][j], board[i+1][j-1])&&buttonmatch(board[i][j], board[i+2][j-2])&&buttonmatch(board[i][j], board[i+3][j-3]))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean buttonmatch(JButton butt1, JButton butt2){
+        if(butt1.getText().equals("")||butt2.getText().equals("")){
+            return false;
+        }else if(butt1.getText().equals(butt2.getText())){
+            return true;
+        }else return false;
+    }
+
     private static boolean isBoardFull() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (board[i][j].getText().equals("")) {
                     return false;
                 }
@@ -86,13 +164,20 @@ public class TTTBoard {
         return true;
     }
 
-    private static void resetBoard() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                board[i][j].setText("");
-            }
-        }
-        currentPlayer = 1;
-        currentPlayerLabel.setText("Player 1's turn");
+    private static void resetGame() {
+        MainMenu mainmenu = new MainMenu();
+        mainmenu.createMainMenu();
+    }
+
+    private static void makeRandomMove() {
+        Random random = new Random();
+        int row, col;
+        if(isBoardFull())
+            return;
+        do {
+            row = random.nextInt(size);
+            col = random.nextInt(size);
+        } while (!board[row][col].getText().equals(""));
+        board[row][col].setText("O");
     }
 }
