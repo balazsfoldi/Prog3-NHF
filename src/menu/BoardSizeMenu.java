@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BoardSizeMenu {
-    public static void showBoardSizeMenu(JFrame frame){
+    public static void showBoardSizeMenu(JFrame frame, String player1, String player2){
+        frame.setTitle("Tic-Tac-Toe: " +player1 +" VS. "+player2);
         JLabel titleLabel = new JLabel("Choose the size of the board!");
         titleLabel.setFont(new Font("Ariel", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -25,7 +26,14 @@ public class BoardSizeMenu {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Kezeljük a "Next" gomb eseményét
+                frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
+                frame.repaint(); // Frissítjük az ablakot
+                TTTBoard board = new TTTBoard();
+                if(five.isSelected()){
+                    board.createGameBoard(frame, player1, player2, 5); // Megjelenítjük az új menüt
+                }else if(seven.isSelected()){
+                    board.createGameBoard(frame, player1, player2, 7); 
+                }else  board.createGameBoard(frame, player1, player2, 3); 
             }
         });
 

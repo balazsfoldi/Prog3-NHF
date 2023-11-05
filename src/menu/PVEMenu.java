@@ -27,7 +27,7 @@ public class PVEMenu {
                 frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
                 frame.repaint(); // Frissítjük az ablakot
                 BoardSizeMenu menu = new BoardSizeMenu();
-                menu.showBoardSizeMenu(frame); // Megjelenítjük az új menüt
+                menu.showBoardSizeMenu(frame, "Player", "AI"); // Megjelenítjük az új menüt
             }
         });
 

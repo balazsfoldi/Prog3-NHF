@@ -1,0 +1,98 @@
+package menu;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TTTBoard {
+    static JButton[][] board;
+    static int currentPlayer;
+    static JLabel currentPlayerLabel;
+    static int n;
+    public static void createGameBoard(JFrame frame, String player1, String player2, int size) {
+        n = size;
+        board = new JButton[size][size];
+        currentPlayer = 1;
+
+        frame.setTitle("Tic Tac Toe");
+        frame.setSize(size*100, size*100);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        JPanel topPanel = new JPanel();
+        frame.add(topPanel, BorderLayout.NORTH);
+        currentPlayerLabel = new JLabel(player1);
+        topPanel.add(currentPlayerLabel);
+
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new GridLayout(size, size));
+        frame.add(gamePanel, BorderLayout.CENTER);
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = new JButton("");
+                board[i][j].setFont(new Font("Arial", Font.PLAIN, 40));
+                board[i][j].setFocusPainted(false);
+                board[i][j].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JButton clickedButton = (JButton) e.getSource();
+
+                        if (clickedButton.getText().equals("")) {
+                            if (currentPlayer == 1) {
+                                clickedButton.setText("X");
+                                currentPlayerLabel.setText(player2);
+                                currentPlayer = 2;
+                            } else {
+                                clickedButton.setText("O");
+                                currentPlayerLabel.setText(player1);
+                                currentPlayer = 1;
+                            }
+                        }
+
+                        if (checkForWin()) {
+                            JOptionPane.showMessageDialog(frame, "Player " + (currentPlayer == 1 ? "1" : "2") + " wins!");
+                            resetBoard();
+                        } else if (isBoardFull()) {
+                            JOptionPane.showMessageDialog(frame, "It's a draw!");
+                            resetBoard();
+                        }
+                    }
+                });
+                gamePanel.add(board[i][j]);
+            }
+        }
+
+        currentPlayerLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        frame.setVisible(true);
+    }
+
+    private static boolean checkForWin() {
+        // Implement your win condition checking logic here
+        // Return true if there is a win, false otherwise
+        return false;
+    }
+
+    private static boolean isBoardFull() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j].getText().equals("")) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void resetBoard() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j].setText("");
+            }
+        }
+        currentPlayer = 1;
+        currentPlayerLabel.setText("Player 1's turn");
+    }
+}
