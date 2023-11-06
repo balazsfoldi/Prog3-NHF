@@ -29,7 +29,7 @@ public class PVPMenu {
                 frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
                 frame.repaint(); // Frissítjük az ablakot
                 BoardSizeMenu menu = new BoardSizeMenu();
-                menu.showBoardSizeMenu(frame, player1TextField.getText(), player2TextField.getText()); // Megjelenítjük az új menüt
+                menu.showBoardSizeMenu(frame, player1TextField.getText(), player2TextField.getText(),0); // Megjelenítjük az új menüt
             }
         });
 

@@ -11,7 +11,7 @@ public class TTTBoard {
     static int currentPlayer;
     static JLabel currentPlayerLabel;
     static int size;
-    public static void createGameBoard(JFrame frame, String player1, String player2, int n) {
+    public static void createGameBoard(JFrame frame, String player1, String player2, int n, int difficulty) {
         size = n;
         board = new JButton[size][size];
         currentPlayer = 1;
@@ -46,17 +46,30 @@ public class TTTBoard {
                                 currentPlayerLabel.setText(player2);
                                 currentPlayer = 2;
                                 if(player2.equals("AI")){
-                                    makeRandomMove();
-                                    currentPlayerLabel.setText(player1+"'s turn");
-                                    currentPlayer = 1;
+                                    if (checkForWin()) {
+                                        JOptionPane.showMessageDialog(frame, (currentPlayer == 1 ? player2 : player1) + " wins!");
+                                        frame.dispose();
+                                        resetGame();
+                                    } else if (isBoardFull()) {
+                                        JOptionPane.showMessageDialog(frame, "It's a draw!");
+                                        frame.dispose();
+                                        resetGame();
+                                    }
+                                    if(difficulty==1){
+                                        makeRandomMove();
+                                        currentPlayerLabel.setText(player1+"'s turn");
+                                        currentPlayer = 1;
+                                    }else if(player2.equals("AI")&&difficulty==2){
+                                        //TODO;
+                                    }
+                                    return;
                                 }
-                            }else{
+                            }else if(difficulty==0){
                                 clickedButton.setText("O");
                                 currentPlayerLabel.setText(player1);
                                 currentPlayer = 1;
                             }
                         }
-
                         if (checkForWin()) {
                             JOptionPane.showMessageDialog(frame, (currentPlayer == 1 ? player2 : player1) + " wins!");
                             frame.dispose();

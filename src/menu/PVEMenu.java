@@ -24,10 +24,12 @@ public class PVEMenu {
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int difficulty = 1;
+                if(diff2.isSelected()) difficulty=2;
                 frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
                 frame.repaint(); // Frissítjük az ablakot
                 BoardSizeMenu menu = new BoardSizeMenu();
-                menu.showBoardSizeMenu(frame, "Player", "AI"); // Megjelenítjük az új menüt
+                menu.showBoardSizeMenu(frame, "Player", "AI", difficulty); // Megjelenítjük az új menüt
             }
         });
 
