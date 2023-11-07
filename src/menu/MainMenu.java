@@ -11,6 +11,7 @@ public class MainMenu {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
         JLabel tttLabel = new JLabel("Tic-Tac-Toe");
         tttLabel.setFont(new Font("Arial", Font.BOLD, 24));
