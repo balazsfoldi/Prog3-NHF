@@ -2,17 +2,20 @@ package menu;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PVEMenu {
-    public static void showPlayerVsAIPanel(JFrame frame) {
+    public PVEMenu(JFrame frame) {
+        //Frame beállítása
+        frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
+        frame.repaint(); // Frissítjük az ablakot
+
         JPanel panel = new JPanel(new GridLayout(2,1));
 
         JLabel titleLabel = new JLabel("Player VS. AI");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        //Opciók
         JRadioButton diff1 = new JRadioButton("Difficulty 1");
         diff1.setSelected(true);
         JRadioButton diff2 = new JRadioButton("Difficulty 2");
@@ -21,17 +24,11 @@ public class PVEMenu {
         group.add(diff2);
         JButton nextButton = new JButton("Next");
 
-        nextButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int difficulty = 1;
-                if(diff2.isSelected()) difficulty=2;
-                frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
-                frame.repaint(); // Frissítjük az ablakot
-                BoardSizeMenu menu = new BoardSizeMenu();
-                menu.showBoardSizeMenu(frame, "Player", "AI", difficulty); // Megjelenítjük az új menüt
-            }
+        nextButton.addActionListener(e -> {
+            int difficulty = diff2.isSelected() ? 2 : 1;
+            new BoardSizeMenu(frame, "Player", "AI", difficulty); // Megjelenítjük az új menüt
         });
+        
 
         panel.add(diff1);
         panel.add(diff2);

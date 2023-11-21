@@ -2,13 +2,16 @@ package menu;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import scoremanagement.*;
 
 public class MainMenu {
-    public static void createMainMenu() {
-        JFrame frame = new JFrame("Tic-Tac-Toe");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    JFrame frame;
+    
+    public MainMenu() {
+        //JFrame beállítása
+        frame = new JFrame("Tic-Tac-Toe");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -21,29 +24,12 @@ public class MainMenu {
         JButton scoreboardButton = new JButton("Scoreboard");
         JButton exitButton = new JButton("Exit");
 
-        startGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
-                frame.repaint(); // Frissítjük az ablakot
-                GameModesMenu menu = new GameModesMenu();
-                menu.showGameModesMenu(frame); // Megjelenítjük az új menüt
-            }
-        });
+        //ActionListener-ek beállítása
+        startGameButton.addActionListener(e -> new GameModes(frame));
 
-        scoreboardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Kezeljük a "Scoreboard" gomb eseményét
-            }
-        });
+        scoreboardButton.addActionListener(e -> new Scoreboard(frame));
 
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        exitButton.addActionListener(e -> System.exit(0));
 
         //Beállítjuk a gombok méretét
         Dimension buttonSize = new Dimension(150, 40);

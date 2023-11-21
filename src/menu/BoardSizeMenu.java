@@ -2,16 +2,18 @@ package menu;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class BoardSizeMenu {
-    public static void showBoardSizeMenu(JFrame frame, String player1, String player2, int difficulty){
+    public BoardSizeMenu(JFrame frame, String player1, String player2, int difficulty){
+        //Frame beállítása
+        frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
+        frame.repaint(); // Frissítjük az ablakot
         frame.setTitle("Tic-Tac-Toe: " +player1 +" VS. "+player2);
         JLabel titleLabel = new JLabel("Choose the size of the board!");
         titleLabel.setFont(new Font("Ariel", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        //Méret opciók
         JRadioButton three = new JRadioButton("3X3");
         three.setSelected(true);
         JRadioButton five = new JRadioButton("5X5");
@@ -23,18 +25,18 @@ public class BoardSizeMenu {
 
         JButton startButton = new JButton("Start Game");
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
-                frame.repaint(); // Frissítjük az ablakot
-                TTTBoard board = new TTTBoard();
-                if(five.isSelected()){
-                    board.createGameBoard(frame, player1, player2, 5, difficulty); // Megjelenítjük az új menüt
-                }else if(seven.isSelected()){
-                    board.createGameBoard(frame, player1, player2, 7, difficulty); // Megjelenítjük 
-                }else  board.createGameBoard(frame, player1, player2, 3, difficulty); // Megjelenítjük 
+        startButton.addActionListener(e -> {
+            frame.getContentPane().removeAll(); // Töröljük az összes tartalmat
+            frame.repaint(); // Frissítjük az ablakot
+        
+            int boardSize = 3; // Default board size
+            if (five.isSelected()) {
+                boardSize = 5;
+            } else if (seven.isSelected()) {
+                boardSize = 7;
             }
+        
+            new GameBoard(frame, player1, player2, boardSize, difficulty); // Megjelenítjük az új menüt
         });
 
         JPanel panel = new JPanel(new GridLayout(3,1));
